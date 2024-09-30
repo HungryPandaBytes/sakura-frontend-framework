@@ -45,10 +45,13 @@ export function h(tag, props = {}, children = []){
     }
 }
 
-const test = h('form', { class: 'login-form', action: 'login' }, [
-    h('input', { type: 'text', name: 'user' }),
-    h('input', { type: 'password', name: 'pass' }),
-    h('button', { on: { click: 'login' } }, ['Log in'])
-  ])
-
-console.log(test['children'][2]['props'])
+export function lipsum(n){
+    text = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+     nisi ut aliquip ex ea commodo consequat.`
+     
+    return hfragment(
+        Array(n).fill(h('p', {}, [text]))
+    )
+}

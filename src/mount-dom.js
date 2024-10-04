@@ -1,4 +1,6 @@
 import { DOM_TYPES } from './h'
+import { setAttributes } from './attributes'
+import { addEventListeners } from './events'
 
 export function mountDOM(vdom, parentEl) {
   switch (vdom.type) {
@@ -33,13 +35,22 @@ export function createTextNode(vdom, parentEl){
 
 export function createElementNode(vdom, parentEl){
     const { tag, props, children } = vdom;
+    // Add attributes & event listeners to the element nodes 
     const element = document.createElement(tag);
     addProps(element, props, vdom);
     vdom.el = element;
-
+    // Mount the children recursively into the element 
     children.forEach( child => mountDOM(child, element));
     parentEl.append(element);
 
+}
+
+export function addProps(el, props, vdom){
+    const { on: events, ...attrs} = props
+    // Add event listeners
+    vdom.listeners = addEventListeners(events, el);
+    // Set attributes
+    setAttributes(el, attrs)
 }
 
 export function createFragmentNodes(vdom, parentEl){

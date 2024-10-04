@@ -23,8 +23,29 @@ export function mountDOM(vdom, parentEl) {
   }
 }
 
-// TODO: implement createTextNode()
+export function createTextNode(vdom, parentEl){
+    const { value } = vdom;
+    const textNode = document.createTextNode(value);
+    // Save a reference to the real DOM node in the virtual node under the el property
+    vdom.el = textNode;
+    parentEl.append(textNode);
+}
 
-// TODO: implement createElementNode()
+export function createElementNode(vdom, parentEl){
+    const { tag, props, children } = vdom;
+    const element = document.createElement(tag);
+    addProps(element, props, vdom);
+    vdom.el = element;
 
-// TODO: implement createFragmentNodes()
+    children.forEach( child => mountDOM(child, element));
+    parentEl.append(element);
+
+}
+
+export function createFragmentNodes(vdom, parentEl){
+    const { children } = vdom;
+    // save the reference of the parent node
+    vdom.el = parentEl;
+
+    children.map( (child) => mountDOM(child, parentEl));
+}
